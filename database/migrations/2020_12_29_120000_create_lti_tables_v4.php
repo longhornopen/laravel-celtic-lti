@@ -18,16 +18,16 @@ class CreateLtiTablesV4 extends Migration
             function (Blueprint $table) {
                 $table->id('consumer_pk');
                 $table->string('name', 50);
-                $table->string('consumer_key', 255)->unique()->nullable();
+                $table->string('consumer_key')->unique()->nullable();
                 $table->string('secret', 1024)->nullable();
-                $table->string('platform_id', 255)->nullable();
-                $table->string('client_id', 255)->nullable();
-                $table->string('deployment_id', 255)->nullable();
+                $table->string('platform_id')->nullable();
+                $table->string('client_id')->nullable();
+                $table->string('deployment_id')->nullable();
                 $table->text('public_key')->nullable();
                 $table->string('lti_version', 10)->nullable();
                 $table->string('signature_method', 15)->default('HMAC-SHA1');
-                $table->string('consumer_name', 255)->nullable();
-                $table->string('consumer_version', 255)->nullable();
+                $table->string('consumer_name')->nullable();
+                $table->string('consumer_version')->nullable();
                 $table->string('consumer_guid', 1024)->nullable();
                 $table->text('profile')->nullable();
                 $table->text('tool_proxy')->nullable();
@@ -76,8 +76,8 @@ class CreateLtiTablesV4 extends Migration
             function (Blueprint $table) {
                 $table->id('context_pk');
                 $table->bigInteger('consumer_pk')->unsigned();
-                $table->string('title', 255)->nullable();
-                $table->string('lti_context_id', 255);
+                $table->string('title')->nullable();
+                $table->string('lti_context_id');
                 $table->string('type', 50)->nullable();
                 $table->text('settings')->nullable();
                 $table->datetime('created');
@@ -94,8 +94,8 @@ class CreateLtiTablesV4 extends Migration
                 $table->id('resource_link_pk');
                 $table->bigInteger('context_pk')->unsigned()->nullable();
                 $table->bigInteger('consumer_pk')->unsigned()->nullable();
-                $table->string('title', 255)->nullable();
-                $table->string('lti_resource_link_id', 255);
+                $table->string('title')->nullable();
+                $table->string('lti_resource_link_id');
                 $table->text('settings');
                 $table->bigInteger('primary_resource_link_pk')->unsigned()->nullable();
                 $table->tinyInteger('share_approved')->nullable();
@@ -116,7 +116,7 @@ class CreateLtiTablesV4 extends Migration
             function (Blueprint $table) {
                 $table->id('user_result_pk');
                 $table->bigInteger('resource_link_pk')->unsigned();
-                $table->string('lti_user_id', 255);
+                $table->string('lti_user_id');
                 $table->string('lti_result_sourcedid', 1024);
                 $table->datetime('created');
                 $table->datetime('updated');

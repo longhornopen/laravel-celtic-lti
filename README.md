@@ -35,6 +35,9 @@ Route::post('/lti', [App\Http\Controllers\LtiController::class, 'ltiMessage']);
 ```
 * Create a new Controller to respond to this traffic: 
 ```php
+use LonghornOpen\LaravelCelticLTI\LtiTool;
+use Illuminate\Http\Request;
+
 class LtiController extends Controller
 {
     public function ltiMessage(Request $request) {

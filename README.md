@@ -57,8 +57,9 @@ class LtiController extends Controller
             ...
 ```
 * Create a Platform database entry for each installation of your app, using either:
-  * the artisan commands (not written yet)
-  * or raw PHP code, as described in (the Celtic docs)[https://github.com/celtic-project/LTI-PHP/wiki/Usage#initialising-a-platform]
+  * the artisan commands provided by this package
+  * the methods of the PlatformCreator class in this package
+  * or your own custom PHP code, as described in (the Celtic docs)[https://github.com/celtic-project/LTI-PHP/wiki/Usage#initialising-a-platform]
 * Install your tool in your LMS.  All LTI URLs should be the '/lti' route you created above.
 
 ## Contributing
@@ -67,9 +68,7 @@ We gladly accept Github issues containing bug reports or suggestions for improve
 
 Pull requests or other offers of development help are appreciated.  If you're wanting to contribute a large change, please open an issue and let us know.
 
-
 ## TODO
 
-* Identify other useful utility code and add it here
-* Write an artisan command to generate LTI consumers
-* Publish this publically on Packagist
+* Write and test LTI 1.3 connectors
+* Publish this on Packagist

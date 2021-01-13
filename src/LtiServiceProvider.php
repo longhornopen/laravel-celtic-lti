@@ -2,8 +2,8 @@
 
 namespace LonghornOpen\LaravelCelticLTI;
 
-use App\Console\Commands\AddLti1p2Platform;
 use Illuminate\Support\ServiceProvider;
+use LonghornOpen\LaravelCelticLTI\Commands\AddLti1p2Platform;
 
 class LtiServiceProvider extends ServiceProvider
 {

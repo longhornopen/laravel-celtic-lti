@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Console\Commands;
+namespace LonghornOpen\LaravelCelticLTI\Commands;
 
 use ceLTIc\LTI;
 use Exception;

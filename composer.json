@@ -6,8 +6,8 @@
   "homepage": "https://github.com/longhornopen/",
   "license": "LGPL-3.0-or-later",
   "require": {
-    "php": "^7.1",
-    "celtic/lti": "^4.2",
+    "php": "^7.1|^8.0",
+    "celtic/lti": "^4.4.0",
     "illuminate/support": "^8"
   },
   "autoload": {

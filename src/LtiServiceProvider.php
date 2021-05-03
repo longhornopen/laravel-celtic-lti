@@ -14,6 +14,7 @@ class LtiServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 AddLti1p2Platform::class,
+                AddLti1p3Platform::class,
             ]);
         }
     }

@@ -46,7 +46,7 @@ class AddLti1p3Platform extends Command
         /*
         // FIXME move this to PlatformCreator
         $pdo = DB::connection()->getPdo();
-        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo);
+        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
 
         $platform_id = 'https://myschool.instructure.com';
         $client_id = 'test';

@@ -42,7 +42,7 @@ class AddLti1p2Platform extends Command
     public function handle()
     {
         $pdo = DB::connection()->getPdo();
-        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo);
+        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
 
         $name = $this->argument('name');
         $consKey = $this->argument('key');

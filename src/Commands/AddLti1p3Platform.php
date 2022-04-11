@@ -6,6 +6,7 @@ use ceLTIc\LTI;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use LonghornOpen\LaravelCelticLTI\PlatformCreator;
 
 class AddLti1p3Platform extends Command
 {
@@ -14,8 +15,10 @@ class AddLti1p3Platform extends Command
      *
      * @var string
      */
-    protected $signature = 'lti:add_platform_1.3 {--lms_type=} {--lms_url=}';
-    // FIXME use lms_url
+    protected $signature = 'lti:add_platform_1.3
+                            {lms_type=custom : custom, canvas-cloud}
+                            {--client_id=}
+                            {--deployment_id=';
 
     /**
      * The console command description.
@@ -41,34 +44,18 @@ class AddLti1p3Platform extends Command
      */
     public function handle()
     {
-        throw new \RuntimeException("LTI 1.3 not supported yet.");
-
-        /*
-        // FIXME move this to PlatformCreator
         $pdo = DB::connection()->getPdo();
         $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
 
-        $platform_id = 'https://myschool.instructure.com';
-        $client_id = 'test';
-        $deployment_id = 'test';
-        $platform = LTI\Platform::fromPlatformId($platform_id, $client_id, $deployment_id, $dataConnector);
-
-        $platform->name = $platform_id;
-        $platform->authorizationServerId = null;  // defaults to the Access Token URL
-        if ($this->option('lms_type') === "canvas-cloud") {
-            $platform->jku = 'https://canvas.instructure.com/api/lti/security/jwks';
-            $platform->authenticationUrl = 'https://canvas.instructure.com/api/lti/authorize_redirect';
-            $platform->accessTokenUrl = 'https://canvas.instructure.com/login/oauth2/token';
-            $platform->rsaKey = null;  // a public key is not required if a JKU is available
-            $platform->signatureMethod = 'RS256';
-        } else {
-            throw new \RuntimeException("Unknown lms type: " . $this->option('lms_type'));
+        if ($this->argument('lms_type') === 'canvas-cloud') {
+            PlatformCreator::createLTI1p3PlatformCanvasCloud(
+                $dataConnector,
+                $deployment_id,
+                $client_id);
+        } else if ($this->argument('lms_type') === 'custom') {
+            throw new \RuntimeException("Custom LTI 1.3 configurations not supported yet.  Use PlatformCreator directly for the moment.");
         }
-
-        $platform->save();
-        $platform->enabled = true;
-
-        return 0;
-        */
+            throw new \RuntimeException("Unknown lms_type '".$this->argument('lms_type')."'");
+        }
     }
 }

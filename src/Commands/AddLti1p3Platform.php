@@ -18,7 +18,8 @@ class AddLti1p3Platform extends Command
     protected $signature = 'lti:add_platform_1.3
                             {lms_type?}
                             {--client_id=}
-                            {--deployment_id=}';
+                            {--deployment_id=}
+                            {--platform_id=}';
 
     /**
      * The console command description.
@@ -45,9 +46,10 @@ class AddLti1p3Platform extends Command
     public function handle()
     {
         if (!$this->argument('lms_type') || !$this->option('client_id') || !$this->option('deployment_id')) {
-            $this->warn("Usage: php artisan lti:add_platform_1.3 {lms_type} --client=id=XXX --deployment_id=YYY");
+            $this->warn("Usage: php artisan lti:add_platform_1.3 {lms_type} --client_id=XXX --deployment_id=YYY");
             $this->warn("  lms_type can be one of:");
             $this->warn("    * 'canvas-cloud' - Cloud-hosted instances of Canvas LMS");
+            $this->warn("    * 'moodle' - Moodle");
             $this->warn("    * 'custom' - Any other LMS.");
             $this->warn('See https://github.com/longhornopen/laravel-celtic-lti/wiki/LTI-Connection-IDs for the locations of the client and deployment IDs in your LMS.');
             return 0;
@@ -63,6 +65,23 @@ class AddLti1p3Platform extends Command
                 $dataConnector,
                 $deployment_id,
                 $client_id);
+            $this->info("Successfully created.");
+            return 0;
+        }
+
+        if ($this->argument('lms_type') === 'moodle') {
+            if (!$this->option('platform_id')) {
+                $this->error("Also provide a --platform_id=... option, giving the Platform ID of your Moodle instance.");
+                $this->error("The Platform ID is probably the same as your Moodle instance's URL without a trailing slash.");
+                return 1;
+            }
+            $platform_id = $this->option('platform_id');
+            PlatformCreator::createLTI1p3PlatformMoodle(
+                $dataConnector,
+                $deployment_id,
+                $client_id,
+                $platform_id
+            );
             $this->info("Successfully created.");
             return 0;
         }

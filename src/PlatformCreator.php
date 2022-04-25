@@ -84,4 +84,33 @@ class PlatformCreator
             $authorization_server_id
         );
     }
+
+    public static function createLTI1p3PlatformMoodle(
+        LTI\DataConnector\DataConnector $dataConnector,
+        $deployment_id,
+        $client_id,
+        $platform_id
+    )
+    {
+        $rsa_key = null;  // a public key is not required if a JKU is available
+        $signature_method = 'RS256';
+
+        $jku = $platform_id . "/mod/lti/certs.php";
+        $authentication_url = $platform_id . "/mod/lti/auth.php";
+        $access_token_url = $platform_id . "/mod/lti/token.php";
+
+        $authorization_server_id = null;  // defaults to the Access Token URL
+        self::createLTI1p3Platform(
+            $dataConnector,
+            $platform_id,
+            $deployment_id,
+            $client_id,
+            $jku,
+            $rsa_key,
+            $signature_method,
+            $authentication_url,
+            $access_token_url,
+            $authorization_server_id
+        );
+    }
 }

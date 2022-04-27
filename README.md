@@ -10,11 +10,19 @@ Require this package with composer.
 composer require longhornopen/laravel-celtic-lti
 ```
 
+Publish this package's assets.
+
+```shell
+php artisan vendor:publish --provider="LonghornOpen\LaravelCelticLTI\LtiServiceProvider"
+```
+
 Run your app's migrations, which will install the 'lti2_*' database tables.
 
 ```php
 php artisan migrate
 ```
+
+Finally, check the `config/lti.php` file to set your app's configuration.
 
 ### Laravel without auto-discovery:
 

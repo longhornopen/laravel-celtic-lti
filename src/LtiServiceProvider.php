@@ -18,6 +18,10 @@ class LtiServiceProvider extends ServiceProvider
                 AddLti1p3Platform::class,
             ]);
         }
+
+        $this->publishes([
+            __DIR__.'/../config/lti.php' => config_path('lti.php'),
+        ]);
     }
 
     public function register() : void

@@ -65,30 +65,37 @@ class LtiTool extends LTI\Tool
      *
      * This function allows tools to bypass CeLTIc's mandatory deployment_id checks, by
      * assuming that the tool has been successfully deployed once, and copying that
-     * deployment with the new deployment_id provided in the request.  Functionally, this
-     * is likely he same thing you'd be asking your users to do by hand.
+     * deployment with the new deployment_id provided in the request.  (Functionally, this
+     * is likely the same thing you'd be asking your users to do by hand.)
      */
     public function createDeploymentIdFromExistingPlatform() : void
     {
-        if (request('iss')!==null && request('client_id')!==null && request('lti_deployment_id')!==null) {
-            $platform_id = request('iss');
-            $client_id = request('client_id');
-            $deployment_id = request('lti_deployment_id');
+        $messageParms = collect($this->getMessageParameters());
+        $platform_id = $messageParms->get('platform_id'); //request('iss');
+        $client_id = $messageParms->get('oauth_consumer_key'); //request('client_id');
+        $deployment_id = $messageParms->get('deployment_id'); //request('lti_deployment_id');
+
+        // if the JWT parms indicate a platform...
+        if ($platform_id!==null && $client_id!==null && $deployment_id!==null) {
             $platform = DB::table('lti2_consumer')
                 ->where('platform_id', $platform_id)
                 ->where('client_id', $client_id)
                 ->where('deployment_id', $deployment_id)
                 ->get();
+            // ... and it's not one we have yet
             if (count($platform) === 0) {
                 $platform = DB::table('lti2_consumer')
                     ->where('platform_id', $platform_id)
                     ->where('client_id', $client_id)
                     ->get();
+                // ... but which shares a platformID and clientID with an existing deployment
                 if (count($platform) > 0) {
+                    // ... clone that deployment, but with this deployment's deploymentID.
                     $new_platform = (array)$platform[0];
                     unset($new_platform['consumer_pk']);
                     $new_platform['deployment_id'] = $deployment_id;
                     DB::table('lti2_consumer')->insert($new_platform);
+                    $this->platform = \ceLTIc\LTI\Platform::fromPlatformId($platform_id, $client_id, $deployment_id, $this->dataConnector);
                 }
             }
         }

@@ -51,7 +51,7 @@ class AddLti1p3Platform extends Command
             $this->warn("    * 'canvas-cloud' - Cloud-hosted instances of Canvas LMS");
             $this->warn("    * 'moodle' - Moodle");
             $this->warn("    * 'custom' - Any other LMS.");
-            $this->warn('See https://github.com/longhornopen/laravel-celtic-lti/wiki/LTI-Connection-IDs for the locations of the client and deployment IDs in your LMS.');
+            $this->warn('See https://github.com/longhornopen/laravel-celtic-lti/wiki/LTI-Key-Generation for the locations of the client and deployment IDs in your LMS.');
             return 0;
         }
 

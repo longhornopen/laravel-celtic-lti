@@ -25,7 +25,7 @@ class LtiServiceProvider extends ServiceProvider
         ]);
 
         try {
-            Tool::$defaultTool = new LtiTool();
+            Tool::$defaultTool = LtiTool::getLtiTool();
         } catch (\PDOException $e) {
             // LtiTool tries to connect to the DB.  Can't do that?
             // Not worth stopping boot() for...any real DB connection

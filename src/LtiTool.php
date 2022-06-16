@@ -16,6 +16,17 @@ class LtiTool extends LTI\Tool
     public const LAUNCH_TYPE_LAUNCH = 'launch';
     public const LAUNCH_TYPE_CONTENT_ITEM = 'content-item';
 
+    protected static $singleton_tool = null;
+
+    public static function getLtiTool() {
+        if (self::$singleton_tool === null) {
+            self::$singleton_tool = new LtiTool();
+        }
+        return self::$singleton_tool;
+    }
+
+    // Generally, you shouldn't construct this object yourself; use the
+    // singleton provided by LtiTool::getLtiTool() instead.
     public function __construct($dataConnector = null)
     {
         if ($dataConnector === null) {

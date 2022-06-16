@@ -3,7 +3,11 @@
 namespace LonghornOpen\LaravelCelticLTI;
 
 use ceLTIc\LTI;
+use ceLTIc\LTI\Context;
 use ceLTIc\LTI\Jwt\Jwt;
+use ceLTIc\LTI\Platform;
+use ceLTIc\LTI\ResourceLink;
+use ceLTIc\LTI\UserResult;
 use Illuminate\Support\Facades\DB;
 
 class LtiTool extends LTI\Tool
@@ -29,6 +33,31 @@ class LtiTool extends LTI\Tool
         if (config('lti.lti13.auto_register_deployment_id')) {
             $this->createDeploymentIdFromExistingPlatform();
         }
+    }
+
+    public function getDataConnector() : ceLTIc\LTI\DataConnector\DataConnector
+    {
+        return $this->dataConnector;
+    }
+
+    public function getUserResultById($id): UserResult
+    {
+        return UserResult::fromRecordId($id, $this->dataConnector);
+    }
+
+    public function getContextById($id): Context
+    {
+        return Context::fromRecordId($id, $this->dataConnector);
+    }
+
+    public function getResourceLinkById($id): ResourceLink
+    {
+        return ResourceLink::fromRecordId($id, $this->dataConnector);
+    }
+
+    public function getPlatformById($id): Platform
+    {
+        return Platform::fromRecordId($id, $this->dataConnector);
     }
 
     public function getLaunchType() : string

@@ -24,7 +24,16 @@ class LtiServiceProvider extends ServiceProvider
             __DIR__.'/../config/lti.php' => config_path('lti.php'),
         ]);
 
-        Tool::$defaultTool = new LtiTool();
+        try {
+            Tool::$defaultTool = new LtiTool();
+        } catch (\PDOException $e) {
+            // LtiTool tries to connect to the DB.  Can't do that?
+            // Not worth stopping boot() for...any real DB connection
+            // problems will get exposed later in app code.
+            //
+            // This catch block might be a sign that this is better implemented as
+            // Middleware than as a Service Provider.
+        }
     }
 
     public function register() : void

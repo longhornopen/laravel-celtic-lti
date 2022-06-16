@@ -6,6 +6,7 @@
   "homepage": "https://github.com/longhornopen/",
   "license": "LGPL-3.0-or-later",
   "require": {
+    "ext-pdo": "*",
     "celtic/lti": "^4.4.0",
     "illuminate/support": "*"
   },

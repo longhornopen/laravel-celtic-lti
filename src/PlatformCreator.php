@@ -113,4 +113,31 @@ class PlatformCreator
             $authorization_server_id
         );
     }
+    public static function createLTI1p3PlatformSchoology(
+        LTI\DataConnector\DataConnector $dataConnector,
+        $deployment_id,
+        $client_id
+    )
+    {
+        $platform_id = 'https://schoology.schoology.com';
+        $rsa_key = null;  // a public key is not required if a JKU is available
+        $signature_method = 'RS256';
+
+        $jku = 'https://lti-service.svc.schoology.com/lti-service/.well-known/jwks';
+        $authentication_url = 'https://lti-service.svc.schoology.com/lti-service/authorize-redirect';
+        $access_token_url = 'https://lti-service.svc.schoology.com/lti-service/access-token';
+        $authorization_server_id = null;  // defaults to the Access Token URL
+        self::createLTI1p3Platform(
+            $dataConnector,
+            $platform_id,
+            $deployment_id,
+            $client_id,
+            $jku,
+            $rsa_key,
+            $signature_method,
+            $authentication_url,
+            $access_token_url,
+            $authorization_server_id
+        );
+    }
 }

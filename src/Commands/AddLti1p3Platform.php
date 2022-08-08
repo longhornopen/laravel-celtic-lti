@@ -50,6 +50,7 @@ class AddLti1p3Platform extends Command
             $this->warn("  lms_type can be one of:");
             $this->warn("    * 'canvas-cloud' - Cloud-hosted instances of Canvas LMS");
             $this->warn("    * 'moodle' - Moodle");
+            $this->warn("    * 'schoology' - Schoology");
             $this->warn("    * 'custom' - Any other LMS.");
             $this->warn('See https://github.com/longhornopen/laravel-celtic-lti/wiki/LTI-Key-Generation for the locations of the client and deployment IDs in your LMS.');
             return 0;
@@ -82,6 +83,15 @@ class AddLti1p3Platform extends Command
                 $client_id,
                 $platform_id
             );
+            $this->info("Successfully created.");
+            return 0;
+        }
+
+        if ($this->argument('lms_type') === 'schoology') {
+            PlatformCreator::createLTI1p3PlatformSchoology(
+                $dataConnector,
+                $deployment_id,
+                $client_id);
             $this->info("Successfully created.");
             return 0;
         }

@@ -63,26 +63,28 @@ class PlatformCreator
         $client_id
     )
     {
-        $platform_id = 'https://canvas.instructure.com';
-        $rsa_key = null;  // a public key is not required if a JKU is available
-        $signature_method = 'RS256';
+        foreach (['canvas.instructure.com','canvas.beta.instructure.com','canvas.test.instructure.com'] as $base_url) {
+            $platform_id = 'https://' . $base_url;
+            $rsa_key = null;  // a public key is not required if a JKU is available
+            $signature_method = 'RS256';
 
-        $jku = 'https://canvas.instructure.com/api/lti/security/jwks';
-        $authentication_url = 'https://canvas.instructure.com/api/lti/authorize_redirect';
-        $access_token_url = 'https://canvas.instructure.com/login/oauth2/token';
-        $authorization_server_id = null;  // defaults to the Access Token URL
-        self::createLTI1p3Platform(
-            $dataConnector,
-            $platform_id,
-            $deployment_id,
-            $client_id,
-            $jku,
-            $rsa_key,
-            $signature_method,
-            $authentication_url,
-            $access_token_url,
-            $authorization_server_id
-        );
+            $jku = 'https://' . $base_url . '/api/lti/security/jwks';
+            $authentication_url = 'https://' . $base_url . '/api/lti/authorize_redirect';
+            $access_token_url = 'https://' . $base_url . '/login/oauth2/token';
+            $authorization_server_id = null;  // defaults to the Access Token URL
+            self::createLTI1p3Platform(
+                $dataConnector,
+                $platform_id,
+                $deployment_id,
+                $client_id,
+                $jku,
+                $rsa_key,
+                $signature_method,
+                $authentication_url,
+                $access_token_url,
+                $authorization_server_id
+            );
+        }
     }
 
     public static function createLTI1p3PlatformMoodle(

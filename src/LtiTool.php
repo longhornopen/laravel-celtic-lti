@@ -19,6 +19,10 @@ class LtiTool extends LTI\Tool
     protected static $singleton_tool = null;
 
     public static function getLtiTool() {
+        // Disable dependence on a draft LTI spec that currently causes problems in Canvas
+        // https://github.com/celtic-project/LTI-PHP/issues/46
+        parent::$postMessageTimeoutDelay = -1;
+
         if (self::$singleton_tool === null) {
             self::$singleton_tool = new LtiTool();
         }

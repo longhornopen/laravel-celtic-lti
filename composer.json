@@ -7,7 +7,7 @@
   "license": "LGPL-3.0-or-later",
   "require": {
     "ext-pdo": "*",
-    "celtic/lti": "^4.10.0",
+    "longhornopen/lti": "^4.10.1",
     "illuminate/support": "*"
   },
   "autoload": {

@@ -63,14 +63,14 @@ class PlatformCreator
         $client_id
     )
     {
-        foreach (['canvas.instructure.com','canvas.beta.instructure.com','canvas.test.instructure.com'] as $base_url) {
-            $platform_id = 'https://' . $base_url;
+        foreach (['.instructure.com','.beta.instructure.com','.test.instructure.com'] as $base_url) {
+            $platform_id = 'https://canvas' . $base_url;
             $rsa_key = null;  // a public key is not required if a JKU is available
             $signature_method = 'RS256';
 
-            $jku = 'https://' . $base_url . '/api/lti/security/jwks';
-            $authentication_url = 'https://' . $base_url . '/api/lti/authorize_redirect';
-            $access_token_url = 'https://' . $base_url . '/login/oauth2/token';
+            $jku = 'https://sso' . $base_url . '/api/lti/security/jwks';
+            $authentication_url = 'https://sso' . $base_url . '/api/lti/authorize_redirect';
+            $access_token_url = 'https://sso' . $base_url . '/login/oauth2/token';
             $authorization_server_id = null;  // defaults to the Access Token URL
             self::createLTI1p3Platform(
                 $dataConnector,

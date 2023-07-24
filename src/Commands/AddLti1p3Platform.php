@@ -18,8 +18,7 @@ class AddLti1p3Platform extends Command
     protected $signature = 'lti:add_platform_1.3
                             {lms_type?}
                             {--client_id=}
-                            {--deployment_id=}
-                            {--platform_id=}';
+                            {--deployment_id=}';
 
     /**
      * The console command description.
@@ -51,6 +50,7 @@ class AddLti1p3Platform extends Command
             $this->warn("    * 'canvas-cloud' - Cloud-hosted instances of Canvas LMS");
             $this->warn("    * 'moodle' - Moodle");
             $this->warn("    * 'schoology' - Schoology");
+            $this->warn("    * 'blackboard-cloud' - Cloud-hosted instances of Blackboard");
             $this->warn("    * 'custom' - Any other LMS.");
             $this->warn('See https://github.com/longhornopen/laravel-celtic-lti/wiki/LTI-Key-Generation for the locations of the client and deployment IDs in your LMS.');
             return 0;
@@ -71,12 +71,8 @@ class AddLti1p3Platform extends Command
         }
 
         if ($this->argument('lms_type') === 'moodle') {
-            if (!$this->option('platform_id')) {
-                $this->error("Also provide a --platform_id=... option, giving the Platform ID of your Moodle instance.");
-                $this->error("The Platform ID is probably the same as your Moodle instance's URL without a trailing slash.");
-                return 1;
-            }
-            $platform_id = $this->option('platform_id');
+            $this->info("You'll need the Platform ID of your Moodle instance.  It's probably the same as your Moodle instance's URL without a trailing slash.");
+            $platform_id = $this->ask("What is your Moodle Platform ID?");
             PlatformCreator::createLTI1p3PlatformMoodle(
                 $dataConnector,
                 $deployment_id,
@@ -96,11 +92,40 @@ class AddLti1p3Platform extends Command
             return 0;
         }
 
+        if ($this->argument('lms_type') === 'blackboard-cloud') {
+            $application_id = $this->ask('What is the Application ID of this app in Blackboard?');
+            PlatformCreator::createLTI1p3PlatformBlackboardCloud(
+                $dataConnector,
+                $deployment_id,
+                $client_id,
+                $application_id);
+            $this->info("Successfully created.");
+            return 0;
+        }
+
         if ($this->argument('lms_type') === 'custom') {
-            // FIXME hook up a bunch of command-line flags to the args in PlatformCreator::createLTI1p3Platform
-            $this->error("Custom LTI 1.3 configurations not supported yet.  Use PlatformCreator directly for the moment.");
-            $this->error("  (We're actively seeking contributions helping to support other LMSes natively.)");
-            return 1;
+            $this->info("In order to create a custom LTI 1.3 platform, you'll need to provide some info about your LMS.");
+            $platform_id = $this->ask("What is your LMS's Platform ID?");
+            $jku = $this->ask("What is your LMS's JSON Web Key Set URL (JKU)?");
+            $rsa_key = null; // not needed if using JKU
+            $signature_method = 'RS256'; // $this->anticipate("What signature method does your LMS use?  (Probably 'RS256')", ['RS256']);
+            $authentication_url = $this->ask("What is your LMS's authentication URL?");
+            $access_token_url = $this->ask("What is your LMS's access token URL?");
+            $authorization_server_id = null; // defaults to the access token URL
+
+            PlatformCreator::createLTI1p3Platform(
+                $dataConnector,
+                $platform_id,
+                $deployment_id,
+                $client_id,
+                $jku,
+                $rsa_key,
+                $signature_method,
+                $authentication_url,
+                $access_token_url,
+                $authorization_server_id);
+            $this->info("Successfully created.");
+            return 0;
         }
 
         $this->error("Unknown lms_type '".$this->argument('lms_type')."'");

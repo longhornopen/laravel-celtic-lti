@@ -142,4 +142,34 @@ class PlatformCreator
             $authorization_server_id
         );
     }
+
+    public static function createLTI1p3PlatformBlackboardCloud(
+        LTI\DataConnector\DataConnector $dataConnector,
+        $deployment_id,
+        $client_id,
+        $application_id
+    )
+    {
+        $platform_id = 'https://blackboard.com';
+        $deployment_id = 'https://blackboard.com';
+        $jku = 'https://developer.blackboard.com/api/v1/management/applications/' . $application_id . '/jwks.json';
+        $rsa_key = null;
+        $signature_method = 'RS256';
+        $authentication_url = 'https://developer.blackboard.com/api/v1/gateway/oidcauth';
+        $access_token_url = 'https://developer.blackboard.com/api/v1/gateway/oauth2/jwttoken';
+        $authorization_server_id = null;  // defaults to the Access Token URL
+
+        self::createLTI1p3Platform(
+            $dataConnector,
+            $platform_id,
+            $deployment_id,
+            $client_id,
+            $jku,
+            $rsa_key,
+            $signature_method,
+            $authentication_url,
+            $access_token_url,
+            $authorization_server_id
+        );
+    }
 }

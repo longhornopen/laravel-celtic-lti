@@ -151,7 +151,6 @@ class PlatformCreator
     )
     {
         $platform_id = 'https://blackboard.com';
-        $deployment_id = 'https://blackboard.com';
         $jku = 'https://developer.blackboard.com/api/v1/management/applications/' . $application_id . '/jwks.json';
         $rsa_key = null;
         $signature_method = 'RS256';

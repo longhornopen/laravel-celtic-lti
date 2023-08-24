@@ -34,7 +34,9 @@ LonghornOpen\LaravelCelticLti\LtiServiceProvider
 
 ## Usage
 
-A sample set of steps to get this library up and running in your app can be found at [https://github.com/longhornopen/laravel-celtic-lti/wiki/Laravel-app-setup](https://github.com/longhornopen/laravel-celtic-lti/wiki/Laravel-app-setup).
+A sample set of steps to get this library up and running in your own app can be found at [https://github.com/longhornopen/laravel-celtic-lti/wiki/Laravel-app-setup](https://github.com/longhornopen/laravel-celtic-lti/wiki/Laravel-app-setup).
+
+A simple Laravel example app using this library, mostly ready to deploy, is at [https://github.com/longhornopen/lti-example-app](https://github.com/longhornopen/lti-example-app).
 
 ## Contributing
 

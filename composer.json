@@ -7,7 +7,7 @@
   "license": "LGPL-3.0-or-later",
   "require": {
     "ext-pdo": "*",
-    "longhornopen/lti": "^4.0",
+    "longhornopen/lti": "^5.0",
     "illuminate/support": "*"
   },
   "autoload": {
@@ -19,7 +19,10 @@
     "laravel": {
       "providers": [
         "LonghornOpen\\LaravelCelticLTI\\LtiServiceProvider"
-      ]
+      ],
+      "aliases": {
+        "LTI": "LonghornOpen\\LaravelCelticLTI\\LtiFacade"
+      }
     }
   }
 }

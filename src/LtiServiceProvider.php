@@ -6,6 +6,7 @@ use ceLTIc\LTI\Tool;
 use Illuminate\Support\ServiceProvider;
 use LonghornOpen\LaravelCelticLTI\Commands\AddLti1p2Platform;
 use LonghornOpen\LaravelCelticLTI\Commands\AddLti1p3Platform;
+use LonghornOpen\LaravelCelticLTI\Commands\UpdateConsumerSetting;
 
 class LtiServiceProvider extends ServiceProvider
 {
@@ -17,6 +18,7 @@ class LtiServiceProvider extends ServiceProvider
             $this->commands([
                 AddLti1p2Platform::class,
                 AddLti1p3Platform::class,
+                UpdateConsumerSetting::class,
             ]);
         }
 

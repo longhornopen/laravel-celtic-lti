@@ -4,6 +4,7 @@ namespace LonghornOpen\LaravelCelticLTI;
 
 use ceLTIc\LTI;
 use ceLTIc\LTI\Context;
+use ceLTIc\LTI\DataConnector;
 use ceLTIc\LTI\Jwt\Jwt;
 use ceLTIc\LTI\Platform;
 use ceLTIc\LTI\ResourceLink;
@@ -50,7 +51,7 @@ class LtiTool extends LTI\Tool
         }
     }
 
-    public function getDataConnector() : ceLTIc\LTI\DataConnector\DataConnector
+    public function getDataConnector() : DataConnector
     {
         return $this->dataConnector;
     }

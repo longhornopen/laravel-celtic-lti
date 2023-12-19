@@ -4,7 +4,7 @@ namespace LonghornOpen\LaravelCelticLTI;
 
 use ceLTIc\LTI;
 use ceLTIc\LTI\Context;
-use ceLTIc\LTI\DataConnector;
+use ceLTIc\LTI\DataConnector\DataConnector;
 use ceLTIc\LTI\Jwt\Jwt;
 use ceLTIc\LTI\Platform;
 use ceLTIc\LTI\ResourceLink;

@@ -36,7 +36,7 @@ class LtiTool extends LTI\Tool
     {
         if ($dataConnector === null) {
             $pdo = DB::connection()->getPdo();
-            $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
+            $dataConnector = DataConnector::getDataConnector($pdo, '', 'pdo');
         }
         parent::__construct($dataConnector);
 

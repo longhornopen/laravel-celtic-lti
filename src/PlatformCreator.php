@@ -25,7 +25,11 @@ class PlatformCreator
         if ($platform->created !== null) {
             throw new \RuntimeException("Platform with this key already exists. Refusing to overwrite.");
         }
-        $platform->name = $name;
+        if (strlen($name) > 50) {
+            $platform->name = substr($name, 0, 50);
+        } else {
+            $platform->name = $name;
+        }
         $platform->secret = $secret;
         $platform->enabled = true;
         $platform->save();
@@ -45,7 +49,11 @@ class PlatformCreator
     ): void {
         $platform = LTI\Platform::fromPlatformId($platform_id, $client_id, $deployment_id, $dataConnector);
 
-        $platform->name = $platform_id;
+        if (strlen($platform_id) > 50) {
+            $platform->name = substr($platform_id, 0, 50);
+        } else {
+            $platform->name = $platform_id;
+        }
         $platform->authorizationServerId = $authorization_server_id;
         $platform->jku = $jku;
         $platform->authenticationUrl = $authentication_url;

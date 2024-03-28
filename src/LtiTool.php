@@ -41,12 +41,12 @@ class LtiTool extends LTI\Tool
         parent::__construct($dataConnector);
 
         parent::$defaultTool = $this;
-        $this->signatureMethod = config('lti.lti13.signature_method');
-        $this->kid = config('lti.lti13.key_id');
-        $this->rsaKey = config('lti.lti13.rsa_private_key');
-        $this->requiredScopes = config('lti.lti13.required_scopes');
+        $this->signatureMethod = config('lti.lti13.signature_method', '');
+        $this->kid = config('lti.lti13.key_id', '');
+        $this->rsaKey = config('lti.lti13.rsa_private_key', '');
+        $this->requiredScopes = config('lti.lti13.required_scopes', []);
 
-        if (config('lti.lti13.auto_register_deployment_id')) {
+        if (config('lti.lti13.auto_register_deployment_id', false)) {
             $this->createDeploymentIdFromExistingPlatform();
         }
     }

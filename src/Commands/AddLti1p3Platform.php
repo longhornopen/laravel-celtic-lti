@@ -57,7 +57,8 @@ class AddLti1p3Platform extends Command
         }
 
         $pdo = DB::connection()->getPdo();
-        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
+        $dbTableNamePrefix = config('database.connections.' . config('database.default') . '.prefix');
+        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, $dbTableNamePrefix, 'pdo');
         $deployment_id = $this->option('deployment_id');
         $client_id = $this->option('client_id');
 

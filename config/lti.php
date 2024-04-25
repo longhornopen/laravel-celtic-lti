@@ -40,4 +40,27 @@ return [
         ]
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Miscellaneous config
+    |--------------------------------------------------------------------------
+     */
+
+    /*
+        The name of the database connection (in config/databasee.php) which will be used
+        as a data source.  By default, this is the same connection that's your 'default'
+        in config/database.php.
+     */
+
+    // 'connection_name' => 'mysql'
+
+    /*
+        The Celtic LTI library requires a DataConnector class which provides access to the
+        database.  We provide a default implementation of this class which uses the same database
+        that you've configured for your Laravel app.  You can write your own custom class that
+        implements the DataConnectorProvider interface and set it here.
+    */
+
+    // 'data_connector_provider' => LonghornOpen\LaravelCelticLTI\DataConnector\MyCustomDataConnectorProvider::class,
+
 ];

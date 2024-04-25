@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use LonghornOpen\LaravelCelticLTI\Commands\AddLti1p2Platform;
 use LonghornOpen\LaravelCelticLTI\Commands\AddLti1p3Platform;
 use LonghornOpen\LaravelCelticLTI\Commands\UpdateConsumerSetting;
+use LonghornOpen\LaravelCelticLTI\DataConnector\DataConnectorProviderFactory;
 
 class LtiServiceProvider extends ServiceProvider
 {
@@ -27,7 +28,8 @@ class LtiServiceProvider extends ServiceProvider
         ]);
 
         try {
-            Tool::$defaultTool = LtiTool::getLtiTool();
+            $dataConnector = DataConnectorProviderFactory::getDataConnectorProvider()->getDataConnector();
+            Tool::$defaultTool = LtiTool::getLtiTool($dataConnector);
         } catch (\PDOException $e) {
             // LtiTool tries to connect to the DB.  Can't do that?
             // Not worth stopping boot() for...any real DB connection

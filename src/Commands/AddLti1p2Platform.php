@@ -6,6 +6,7 @@ use ceLTIc\LTI;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use LonghornOpen\LaravelCelticLTI\DataConnector\DataConnectorProviderFactory;
 use LonghornOpen\LaravelCelticLTI\PlatformCreator;
 
 class AddLti1p2Platform extends Command
@@ -41,8 +42,7 @@ class AddLti1p2Platform extends Command
      */
     public function handle()
     {
-        $pdo = DB::connection()->getPdo();
-        $dataConnector = LTI\DataConnector\DataConnector::getDataConnector($pdo, '', 'pdo');
+        $dataConnector = DataConnectorProviderFactory::getDataConnectorProvider()->getDataConnector();
 
         $name = $this->argument('name');
         $consKey = $this->argument('key');

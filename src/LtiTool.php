@@ -10,6 +10,7 @@ use ceLTIc\LTI\Platform;
 use ceLTIc\LTI\ResourceLink;
 use ceLTIc\LTI\UserResult;
 use Illuminate\Support\Facades\DB;
+use LonghornOpen\LaravelCelticLTI\DataConnector\DataConnectorProviderFactory;
 
 class LtiTool extends LTI\Tool
 {
@@ -31,12 +32,14 @@ class LtiTool extends LTI\Tool
     }
 
     // Generally, you shouldn't construct this object yourself; use the
-    // singleton provided by LtiTool::getLtiTool() instead.
+    // singleton provided by LtiTool::getLtiTool() instead.  Celtic's
+    // LTI code processes LTI nonces (one-time-use tokens) and invalidates
+    // them after processing, so creating a second LtiTool in the middle
+    // of a request will often fail due to nonce problems.
     public function __construct($dataConnector = null)
     {
         if ($dataConnector === null) {
-            $pdo = DB::connection()->getPdo();
-            $dataConnector = DataConnector::getDataConnector($pdo, '', 'pdo');
+            $dataConnector = DataConnectorProviderFactory::getDataConnectorProvider()->getDataConnector();
         }
         parent::__construct($dataConnector);
 

@@ -119,9 +119,9 @@ class LtiTool extends LTI\Tool
     public function createDeploymentIdFromExistingPlatform() : void
     {
         $messageParms = collect($this->getMessageParameters());
-        $platform_id = $messageParms->get('platform_id'); //request('iss');
-        $client_id = $messageParms->get('oauth_consumer_key'); //request('client_id');
-        $deployment_id = $messageParms->get('deployment_id'); //request('lti_deployment_id');
+        $platform_id = $messageParms->get('iss');
+        $client_id = $messageParms->get('client_id');
+        $deployment_id = $messageParms->get('lti_deployment_id');
 
         // if the JWT parms indicate a platform...
         if ($platform_id!==null && $client_id!==null && $deployment_id!==null) {

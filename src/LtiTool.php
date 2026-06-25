@@ -6,7 +6,7 @@ use ceLTIc\LTI;
 use ceLTIc\LTI\Context;
 use ceLTIc\LTI\Cookie;
 use ceLTIc\LTI\DataConnector\DataConnector;
-use ceLTIc\LTI\Http;
+use ceLTIc\LTI\Http\HttpMessage;
 use ceLTIc\LTI\Jwt\Jwt;
 use ceLTIc\LTI\Platform;
 use ceLTIc\LTI\ResourceLink;
@@ -60,9 +60,10 @@ class LtiTool extends LTI\Tool
         // send everything to Log::getLogger, which can decide whether to actually do the logging based on level
         Util::$logLevel = LTI\Enum\LogLevel::Debug;
         Util::setLoggerClient(Log::getLogger());
+        // use library-specific variants of Celtic service clients
         Session\Session::setSessionClient(new LonghornLaravelSessionClient());
+        HttpMessage::setHttpClient(new LonghornLaravelHttpClient());
         Cookie\Cookie::setCookieClient(new LonghornLaravelCookieClient());
-        // FIXME //Http\HttpMessage::setHttpClient(new LonghornLaravelHttpClient());
         $this->onExitExceptionClass = LtiExitException::class;
 
         $this->signatureMethod = config('lti.lti13.signature_method', '');
@@ -79,7 +80,7 @@ class LtiTool extends LTI\Tool
     /**
      * @throws LtiException
      */
-    public function handleRequest(?bool $strictMode = null, bool $disableCookieCheck = false, bool $generateWarnings = false): void
+    public function processRequest(?bool $strictMode = null, bool $disableCookieCheck = false, bool $generateWarnings = false): void
     {
         try {
             parent::handleRequest($strictMode, $disableCookieCheck, $generateWarnings);
@@ -96,6 +97,19 @@ class LtiTool extends LTI\Tool
                 throw new HttpResponseException(new Response($output));
             }
         }
+    }
+
+    /**
+     * @deprecated Use processRequest() instead.
+     */
+    public function handleRequest(
+        ?bool $strictMode = null,
+        bool $disableCookieCheck = false,
+        bool $generateWarnings = false
+    ): never {
+        throw new \BadMethodCallException(
+            'LtiTool::handleRequest() is disabled. Use processRequest() instead.'
+        );
     }
 
     public function getDataConnector() : DataConnector

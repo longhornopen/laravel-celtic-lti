@@ -6,9 +6,10 @@
   "homepage": "https://github.com/longhornopen/",
   "license": "LGPL-3.0-or-later",
   "require": {
+    "php": "^8.2",
     "ext-pdo": "*",
-    "longhornopen/lti": "^5.2",
-    "illuminate/support": "*"
+    "celtic/lti": "^5.4.0",
+    "laravel/framework": "*"
   },
   "autoload": {
     "psr-4": {

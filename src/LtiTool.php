@@ -4,17 +4,29 @@ namespace LonghornOpen\LaravelCelticLTI;
 
 use ceLTIc\LTI;
 use ceLTIc\LTI\Context;
+use ceLTIc\LTI\Cookie;
 use ceLTIc\LTI\DataConnector\DataConnector;
+use ceLTIc\LTI\Http;
 use ceLTIc\LTI\Jwt\Jwt;
 use ceLTIc\LTI\Platform;
 use ceLTIc\LTI\ResourceLink;
+use ceLTIc\LTI\Session;
 use ceLTIc\LTI\UserResult;
+use ceLTIc\LTI\Util;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use LonghornOpen\LaravelCelticLTI\Adaptors\LonghornLaravelCookieClient;
+use LonghornOpen\LaravelCelticLTI\Adaptors\LonghornLaravelHttpClient;
+use LonghornOpen\LaravelCelticLTI\Adaptors\LonghornLaravelSessionClient;
 use LonghornOpen\LaravelCelticLTI\DataConnector\DataConnectorProviderFactory;
+use LonghornOpen\LaravelCelticLTI\Exceptions\LtiExitException;
 
 class LtiTool extends LTI\Tool
 {
-    protected $launchType = "";
+    protected string $launchType = "";
     public const LAUNCH_TYPE_LAUNCH = 'launch';
     public const LAUNCH_TYPE_CONTENT_ITEM = 'content-item';
 
@@ -44,6 +56,15 @@ class LtiTool extends LTI\Tool
         parent::__construct($dataConnector);
 
         parent::$defaultTool = $this;
+
+        // send everything to Log::getLogger, which can decide whether to actually do the logging based on level
+        Util::$logLevel = LTI\Enum\LogLevel::Debug;
+        Util::setLoggerClient(Log::getLogger());
+        Session\Session::setSessionClient(new LonghornLaravelSessionClient());
+        Cookie\Cookie::setCookieClient(new LonghornLaravelCookieClient());
+        // FIXME //Http\HttpMessage::setHttpClient(new LonghornLaravelHttpClient());
+        $this->onExitExceptionClass = LtiExitException::class;
+
         $this->signatureMethod = config('lti.lti13.signature_method', '');
         $this->kid = config('lti.lti13.key_id', '');
         $this->rsaKey = config('lti.lti13.rsa_private_key', '');
@@ -51,6 +72,29 @@ class LtiTool extends LTI\Tool
 
         if (!app()->runningInConsole() && config('lti.lti13.auto_register_deployment_id', false)) {
             $this->createDeploymentIdFromExistingPlatform();
+        }
+    }
+
+
+    /**
+     * @throws LtiException
+     */
+    public function handleRequest(?bool $strictMode = null, bool $disableCookieCheck = false, bool $generateWarnings = false): void
+    {
+        try {
+            parent::handleRequest($strictMode, $disableCookieCheck, $generateWarnings);
+        } catch (LtiExitException $e) {
+            if ($e->getCode() >= 400) {
+                throw $e;
+            }
+
+            if ($redirectUrl = $this->getRedirectUrl()) {
+                throw new HttpResponseException(new RedirectResponse($redirectUrl));
+            }
+
+            if ($output = $this->getOutput()) {
+                throw new HttpResponseException(new Response($output));
+            }
         }
     }
 

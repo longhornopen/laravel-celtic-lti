@@ -30,7 +30,7 @@ class LtiServiceProvider extends ServiceProvider
         try {
             $dataConnector = DataConnectorProviderFactory::getDataConnectorProvider()->getDataConnector();
             Tool::$defaultTool = LtiTool::getLtiTool($dataConnector);
-        } catch (\PDOException $e) {
+        } catch (\Exception $e) {
             // LtiTool tries to connect to the DB.  Can't do that?
             // Not worth stopping boot() for...any real DB connection
             // problems will get exposed later in app code.

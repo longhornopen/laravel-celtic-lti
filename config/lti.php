@@ -61,6 +61,6 @@ return [
         implements the DataConnectorProvider interface and set it here.
     */
 
-    // 'data_connector_provider' => LonghornOpen\LaravelCelticLTI\DataConnector\MyCustomDataConnectorProvider::class,
+    // 'data_connector_provider' => LonghornOpen\LaravelCelticLTI\DataConnector\LaravelDataConnectorProvider::class,
 
 ];
